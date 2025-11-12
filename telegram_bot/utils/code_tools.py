@@ -1,0 +1,60 @@
+# telegram_bot/utils/code_tools.py
+# code generate and validate
+
+import random, string
+from utils.database import load_unlock_codes, save_unlock_codes
+from utils.time_tools import now_utc, iso
+
+def generate_code(length=6):
+    chars = string.ascii_uppercase + string.digits
+    return "".join(random.choice(chars) for _ in range(length))
+
+def create_bulk_codes(n, typ="1m", duration_days=30, issued_by=None, max_uses=1):
+    codes = load_unlock_codes()
+    out = []
+    for _ in range(n):
+        c = generate_code()
+        obj = {
+            "code": c,
+            "type": typ,
+            "duration_days": duration_days,
+            "issued_by": issued_by,
+            "issued_at": iso(now_utc()),
+            "expires_at": None,
+            "used_by": None,
+            "used_at": None,
+            "max_uses": max_uses,
+            "uses": 0
+        }
+        codes.append(obj)
+        out.append(obj)
+    save_unlock_codes(codes)
+    return out
+
+def validate_code(code_str, user_id):
+    codes = load_unlock_codes()
+    for c in codes:
+        if c["code"] == code_str:
+            # check expiry
+            if c.get("expires_at"):
+                # parse if necessary (not fully implemented)
+                pass
+            if c.get("uses",0) >= c.get("max_uses",1):
+                return {"ok": False, "reason": "used"}
+            # compute expires_at
+            from utils.time_tools import add_days, iso
+            expires = iso(add_days(now_utc(), c.get("duration_days",1)))
+            return {"ok": True, "type": c.get("type","test"), "expires_at": expires}
+    return {"ok": False, "reason": "notfound"}
+
+def consume_code(code_str, user_id):
+    codes = load_unlock_codes()
+    for c in codes:
+        if c["code"] == code_str:
+            c["uses"] = c.get("uses",0) + 1
+            if c["uses"] >= c.get("max_uses",1):
+                c["used_by"] = user_id
+                c["used_at"] = iso(now_utc())
+            save_unlock_codes(codes)
+            return True
+    return False
