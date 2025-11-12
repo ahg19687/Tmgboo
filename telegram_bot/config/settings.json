@@ -1,0 +1,16 @@
+{
+  "bot_token": null,
+  "default_lang": "fa",
+  "delay_min_seconds": 2,
+  "delay_max_seconds": 5,
+  "batch_size": 30,
+  "reminder_days_before_expiry": [7, 1],
+  "admin_main_id": null,
+  "daily_send_time": "09:00",
+  "backup_every_days": 7,
+  "store_scheduled_texts": true,
+  "db_engine": "json",
+  "app_mode": "production",
+  "log_level": "INFO",
+  "rate_limit_per_minute": 60
+}
