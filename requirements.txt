@@ -1,0 +1,2 @@
+pip install -r telegram_bot/requirements.txt
+python telegram_bot/main.py
