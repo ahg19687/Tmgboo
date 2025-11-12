@@ -1,0 +1,14 @@
+{
+  "start_welcome": "Welcome! I'm the group manager bot. Use the menu to start.",
+  "menu_language": "Language",
+  "menu_unlock": "Unlock subscription",
+  "menu_support": "Support",
+  "menu_my_groups": "My Groups",
+  "menu_scheduler": "Scheduler",
+  "menu_send_now": "Send Now",
+  "menu_profile": "Profile",
+  "confirm_send": "Are you sure you want to send this message?",
+  "no_groups": "You have not added any groups yet.",
+  "invalid_code": "Code is invalid or expired.",
+  "unlock_success": "Subscription active until {expires}."
+}
