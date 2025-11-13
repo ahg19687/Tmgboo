@@ -74,4 +74,4 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await query.edit_message_text(
             text=get_text("unknown_action", lang=lang) or "❌ عمل ناشناخته"
-                                 )ه
+                                 )
