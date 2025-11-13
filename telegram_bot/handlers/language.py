@@ -12,3 +12,6 @@ async def set_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_rec["lang"] = lang
     upsert_user(user.id, user_rec)
     await context.bot.send_message(chat_id=update.effective_chat.id, text=get_text("start_welcome", lang=lang))
+# --- ADD AFTER LANGUAGE CHANGE ---
+users[str(user_id)]["lang"] = new_lang
+save_json("telegram_bot/data/users.json", users)
