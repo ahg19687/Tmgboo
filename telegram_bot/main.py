@@ -1,6 +1,10 @@
 # 📄 /telegram_bot/main.py
 # Application entry point
 
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import os, logging
 from telegram.ext import ApplicationBuilder
 from handlers import register_handlers
