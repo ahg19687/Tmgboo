@@ -1,10 +1,10 @@
 # telegram_bot/handlers/start.py
-
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes, MessageHandler, filters
 from config.messages import get_text
 from utils.database import upsert_user, get_user, is_admin
-from .navigation import go_back  # ✅ اضافه شد
+from keyboards.admin_keyboards import admin_main_menu
+from .navigation import go_back
 import logging
 
 LOG = logging.getLogger(__name__)
@@ -22,6 +22,16 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         # اگر کاربر جدید باشد یا قفل باشد:
         locked = user_data.get("locked", True)
+
+    # اگر کاربر ادمین باشد، مستقیماً به پنل ادمین هدایت شود
+    if is_admin(user.id):
+        text = "👑 Admin Panel" if lang != "fa" else "👑 پنل مدیریت"
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=text,
+            reply_markup=admin_main_menu(lang)
+        )
+        return
 
     # متن خوش‌آمد به زبان کاربر
     if locked:
