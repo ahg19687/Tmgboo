@@ -1,15 +1,36 @@
 # telegram_bot/handlers/navigation.py
-
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
-from utils.database import get_user
+from utils.database import get_user, is_admin
 from config.messages import get_text
+from keyboards.admin_keyboards import admin_main_menu
+from keyboards.user_keyboards import unlocked_user_menu
 
 async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_data = get_user(update.effective_user.id) or {}
     lang = user_data.get("lang", "fa")
     locked = user_data.get("locked", True)
+    admin = is_admin(update.effective_user.id)
 
+    # اگر کاربر ادمین باشد، منوی ادمین نشان داده شود
+    if admin:
+        text = "👑 Admin Panel - Choose management section:"
+        if lang == "fa":
+            text = "👑 پنل مدیریت - بخش مورد نظر را انتخاب کنید:"
+        
+        if update.message:
+            await update.message.reply_text(
+                text=text,
+                reply_markup=admin_main_menu(lang)
+            )
+        else:
+            await update.callback_query.edit_message_text(
+                text=text,
+                reply_markup=admin_main_menu(lang)
+            )
+        return
+
+    # کاربران عادی
     if locked:
         text = get_text("start_locked", lang=lang)
         keyboard = [
@@ -28,13 +49,12 @@ async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton(get_text("back_to_main", lang=lang), callback_data="main_menu")],
         ]
 
-    # اگر از پیام استفاده می‌کند (نه callback)
     if update.message:
         await update.message.reply_text(
             text=text,
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
-    else:  # اگر از callback استفاده می‌کند
+    else:
         await update.callback_query.edit_message_text(
             text=text,
             reply_markup=InlineKeyboardMarkup(keyboard)
