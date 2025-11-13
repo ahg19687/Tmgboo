@@ -16,7 +16,7 @@
   "code_generated": "🔑 Code generated:\n{code}\nDuration: {dur_text}\nExpires at: {expires}",
   "enter_schedule": "🕒 Please enter send time (HH:MM).",
   "schedule_set": "✅ Schedule saved: {time}",
-  "lang_changed": "Language changed to {lang}.",
+  "lang_changed": "✅ Language changed to {lang}.",
   "backup_done": "📦 Backup created and sent to admins.",
   "reminder_message": "⚠️ Your subscription has expired. Please contact support to renew.",
   "trial_code_note": "This is a test code and will last 1 day."
