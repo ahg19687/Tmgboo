@@ -29,11 +29,60 @@
   "menu_scheduler": "⏰ Scheduler",
   "menu_send_now": "📤 Send Now",
   "menu_profile": "👤 Profile",
-  
   "back_to_main": "🏠 Main Menu",
   "back_previous": "🔙 Back",
   "choose_language": "🌐 Choose your language:",
   "language_fa": "🇮🇷 Persian",
   "language_en": "🇺🇸 English",
-  "unknown_action": "❌ Unknown action"
+  "unknown_action": "❌ Unknown action",
+
+  "admin_users_management": "👤 User Management",
+  "admin_groups_management": "👥 Groups Management", 
+  "admin_codes_management": "🔑 Codes Management",
+  "admin_admins_management": "⚙️ Admins Management",
+  "admin_messages_management": "📨 Messages Management",
+  
+  "list_users_btn": "📋 List Users",
+  "search_users_btn": "🔍 Search Users",
+  "promote_to_admin2_btn": "⬆️ Promote to Admin Level 2",
+  "promote_to_admin1_btn": "⬆️ Promote to Admin Level 1",
+  "view_user_profile_btn": "👤 View User Profile",
+  "view_user_subscription_btn": "📅 View User Subscription",
+  "user_groups_list_btn": "👥 User Groups List",
+  "lock_user_btn": "🔒 Lock User",
+  "unlock_user_btn": "🔓 Unlock User",
+  "user_messages_btn": "📨 User Messages",
+  "send_to_user_btn": "📤 Send Message to User",
+  
+  "my_groups_list_btn": "📋 My Groups List",
+  "add_group_btn": "➕ Add Group",
+  "remove_group_btn": "🗑 Remove Group",
+  
+  "test_code_btn": "🧪 1-Day Test Code",
+  "1month_code_btn": "📅 1-Month Subscription",
+  "3month_code_btn": "📅 3-Month Subscription",
+  "4month_code_btn": "📅 4-Month Subscription",
+  "gift_code_btn": "🎁 Gift Code",
+  "active_codes_list_btn": "📋 Active Codes List",
+  
+  "list_admins_btn": "📋 List Admins",
+  "search_admins_btn": "🔍 Search Admins",
+  "add_admin_btn": "➕ Add New Admin",
+  "remove_admin_btn": "🗑 Remove Admin",
+  "manage_admin_permissions_btn": "⚙️ Manage Admin Permissions",
+  "admin_messages_to_me_btn": "📨 Admin Messages to Me",
+  "send_to_admin_btn": "📤 Send Message to Admin",
+  
+  "schedule_message_btn": "⏰ Schedule Message",
+  "instant_send_btn": "🚀 Instant Send",
+  "message_to_user_btn": "📨 Message to Specific User",
+  "selected_groups_btn": "✅ Selected Groups",
+  
+  "profile_btn": "👤 Profile",
+  "messages_management_btn": "📨 Messages Management",
+  "groups_management_btn": "👥 Groups Management",
+  "reminders_btn": "⏰ Reminders",
+  
+  "back_to_admin_main_btn": "🔙 Back to Admin Main Menu",
+  "back_to_main_menu_btn": "🔙 Back to Main Menu"
 }
