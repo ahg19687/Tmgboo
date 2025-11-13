@@ -1,6 +1,7 @@
 {
   "start_locked": "🔒 Your account is locked. Use Support to get an unlock code.",
   "start_unlocked": "✅ Welcome! Use the menu.",
+  "start_welcome": "👋 Welcome to Group Management Bot!",
   "support_prompt": "Contact admins for support:\n{admins}",
   "locked_click": "🔒 Your account is locked. Please contact support to unlock.",
   "ask_code": "🔐 Enter unlock code or use /unlock <code>.",
@@ -19,5 +20,20 @@
   "lang_changed": "✅ Language changed to {lang}.",
   "backup_done": "📦 Backup created and sent to admins.",
   "reminder_message": "⚠️ Your subscription has expired. Please contact support to renew.",
-  "trial_code_note": "This is a test code and will last 1 day."
+  "trial_code_note": "This is a test code and will last 1 day.",
+  
+  "menu_language": "🌐 Change Language",
+  "menu_unlock": "🔓 Unlock", 
+  "menu_support": "🆘 Support",
+  "menu_my_groups": "📊 My Groups",
+  "menu_scheduler": "⏰ Scheduler",
+  "menu_send_now": "📤 Send Now",
+  "menu_profile": "👤 Profile",
+  
+  "back_to_main": "🏠 Main Menu",
+  "back_previous": "🔙 Back",
+  "choose_language": "🌐 Choose your language:",
+  "language_fa": "🇮🇷 Persian",
+  "language_en": "🇺🇸 English",
+  "unknown_action": "❌ Unknown action"
 }
