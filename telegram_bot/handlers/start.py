@@ -3,7 +3,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes, MessageHandler, filters
 from config.messages import get_text
-from utils.database import upsert_user, get_user
+from utils.database import upsert_user, get_user, is_admin
 from .navigation import go_back  # ✅ اضافه شد
 import logging
 
@@ -16,8 +16,12 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_data = get_user(user.id) or {}
     lang = user_data.get("lang") or "fa"
 
-    # اگر کاربر جدید باشد یا قفل باشد:
-    locked = user_data.get("locked", True)
+    # اگر کاربر ادمین باشد، همیشه آزاد باشد
+    if is_admin(user.id):
+        locked = False
+    else:
+        # اگر کاربر جدید باشد یا قفل باشد:
+        locked = user_data.get("locked", True)
 
     # متن خوش‌آمد به زبان کاربر
     if locked:
