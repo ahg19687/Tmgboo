@@ -30,14 +30,17 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         
     elif data.startswith("setlang_"):
-        # تغییر زبان
-        new_lang = data.replace("setlang_", "")
-        user_data["lang"] = new_lang
-        upsert_user(user.id, user_data)
-        
-        await query.edit_message_text(
-            text=get_text("lang_changed", lang=new_lang)  # ✅ اینجا درست شده
-        )
+    # تغییر زبان
+    new_lang = data.replace("setlang_", "")
+    user_data["lang"] = new_lang
+    upsert_user(user.id, user_data)
+    
+    # نمایش نام زبان
+    lang_name = "فارسی" if new_lang == "fa" else "English"
+    
+    # مستقیماً منوی اصلی رو با زبان جدید نشون بده
+    from .navigation import go_back
+    await go_back(update, context)
         
     elif data == "unlock":
         await query.edit_message_text(
