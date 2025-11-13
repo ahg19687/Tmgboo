@@ -1,55 +1,47 @@
-# 📄 /keyboards/user_keyboards.py
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+# telegram_bot/keyboards/user_keyboards.py
+from telegram import ReplyKeyboardMarkup, KeyboardButton
 
-# 🔹 منوی اصلی کاربر آزاد
 def main_menu(lang: str):
     if lang == "fa":
-        buttons = [
+        keyboard = [
             [KeyboardButton("📋 گروه‌های من")],
             [KeyboardButton("🕒 زمان‌بندی ارسال"), KeyboardButton("📦 بکاپ")],
-            [KeyboardButton("🌐 تغییر زبان")]
-        ]
-    else:
-        buttons = [
-            [KeyboardButton("📋 My Groups")],
-            [KeyboardButton("🕒 Schedule"), KeyboardButton("📦 Backup")],
-            [KeyboardButton("🌐 Change Language")]
-        ]
-    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
-
-# 🔹 منوی قفل‌شده (کاربر هنوز اشتراک نداره)
-def locked_menu(lang: str):
-    if lang == "fa":
-        buttons = [
-            [KeyboardButton("🔓 قفل‌گشایی"), KeyboardButton("💬 پشتیبانی")],
-            [KeyboardButton("🌐 تغییر زبان")]
-        ]
-    else:
-        buttons = [
-            [KeyboardButton("🔓 Unlock"), KeyboardButton("💬 Support")],
-            [KeyboardButton("🌐 Change Language")]
-        ]
-    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
-
-# 🔹 منوی زبان
-def language_menu():
-    return ReplyKeyboardMarkup(
-        keyboard=[
-            [KeyboardButton("🇮🇷 فارسی"), KeyboardButton("🇬🇧 English")],
-            [KeyboardButton("🏠 منوی اصلی / Main Menu")]
-        ],
-        resize_keyboard=True
-    )
-
-# 🔹 کیبورد بازگشت به منوی قبل یا اصلی (افزوده شده)
-# Added: Back/Main buttons
-def back_main_menu(lang: str):
-    if lang == "fa":
-        buttons = [
+            [KeyboardButton("🌐 تغییر زبان")],
             [KeyboardButton("🔙 بازگشت"), KeyboardButton("🏠 منوی اصلی")]
         ]
     else:
-        buttons = [
+        keyboard = [
+            [KeyboardButton("📋 My Groups")],
+            [KeyboardButton("🕒 Schedule"), KeyboardButton("📦 Backup")],
+            [KeyboardButton("🌐 Change Language")],
             [KeyboardButton("🔙 Back"), KeyboardButton("🏠 Main Menu")]
         ]
-    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
+
+def locked_menu(lang: str):
+    if lang == "fa":
+        keyboard = [
+            [KeyboardButton("🔓 قفل‌گشایی"), KeyboardButton("💬 پشتیبانی")],
+            [KeyboardButton("🌐 تغییر زبان")],
+            [KeyboardButton("🔙 بازگشت"), KeyboardButton("🏠 منوی اصلی")]
+        ]
+    else:
+        keyboard = [
+            [KeyboardButton("🔓 Unlock"), KeyboardButton("💬 Support")],
+            [KeyboardButton("🌐 Change Language")],
+            [KeyboardButton("🔙 Back"), KeyboardButton("🏠 Main Menu")]
+        ]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
+
+def language_menu(lang: str = "fa"):
+    if lang == "fa":
+        keyboard = [
+            [KeyboardButton("🇮🇷 فارسی"), KeyboardButton("🇬🇧 English")],
+            [KeyboardButton("🔙 بازگشت"), KeyboardButton("🏠 منوی اصلی")]
+        ]
+    else:
+        keyboard = [
+            [KeyboardButton("🇮🇷 فارسی"), KeyboardButton("🇬🇧 English")],
+            [KeyboardButton("🔙 Back"), KeyboardButton("🏠 Main Menu")]
+        ]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
