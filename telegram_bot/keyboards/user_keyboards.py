@@ -1,47 +1,85 @@
 # telegram_bot/keyboards/user_keyboards.py
 from telegram import ReplyKeyboardMarkup, KeyboardButton
+from config.messages import get_message
 
-def main_menu(lang: str):
+def main_menu(lang: str = "fa"):
+    """منوی اصلی برای کاربران عادی (قفل‌شده)"""
     if lang == "fa":
         keyboard = [
-            [KeyboardButton("📋 گروه‌های من")],
-            [KeyboardButton("🕒 زمان‌بندی ارسال"), KeyboardButton("📦 بکاپ")],
-            [KeyboardButton("🌐 تغییر زبان")],
-            [KeyboardButton("🔙 بازگشت"), KeyboardButton("🏠 منوی اصلی")]
+            ["🔓 قفل‌گشایی", "💬 پشتیبانی"],
+            ["🌐 تغییر زبان"]
         ]
     else:
         keyboard = [
-            [KeyboardButton("📋 My Groups")],
-            [KeyboardButton("🕒 Schedule"), KeyboardButton("📦 Backup")],
-            [KeyboardButton("🌐 Change Language")],
-            [KeyboardButton("🔙 Back"), KeyboardButton("🏠 Main Menu")]
+            ["🔓 Unlock", "💬 Support"],
+            ["🌐 Change Language"]
         ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
-def locked_menu(lang: str):
+def unlocked_user_menu(lang: str = "fa"):
+    """منوی کاربران آزاد شده - دسترسی کامل"""
     if lang == "fa":
         keyboard = [
-            [KeyboardButton("🔓 قفل‌گشایی"), KeyboardButton("💬 پشتیبانی")],
-            [KeyboardButton("🌐 تغییر زبان")],
-            [KeyboardButton("🔙 بازگشت"), KeyboardButton("🏠 منوی اصلی")]
+            ["👤 پروفایل", "📨 مدیریت پیام‌ها"],
+            ["👥 مدیریت گروه‌ها", "⏰ یادآورها"],
+            ["🌐 تغییر زبان", "💬 پشتیبانی"]
         ]
     else:
         keyboard = [
-            [KeyboardButton("🔓 Unlock"), KeyboardButton("💬 Support")],
-            [KeyboardButton("🌐 Change Language")],
-            [KeyboardButton("🔙 Back"), KeyboardButton("🏠 Main Menu")]
+            ["👤 Profile", "📨 Messages Management"],
+            ["👥 Groups Management", "⏰ Reminders"],
+            ["🌐 Change Language", "💬 Support"]
+        ]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
+
+def user_messages_menu(lang: str = "fa"):
+    """منوی مدیریت پیام‌ها برای کاربران آزاد"""
+    if lang == "fa":
+        keyboard = [
+            ["⏰ زمان‌بندی ارسال", "🚀 ارسال فوری"],
+            ["✅ گروه‌های انتخاب شده", "📨 پیام به ادمین"],
+            ["🔙 بازگشت"]
+        ]
+    else:
+        keyboard = [
+            ["⏰ Schedule Send", "🚀 Instant Send"],
+            ["✅ Selected Groups", "📨 Message to Admin"],
+            ["🔙 Back"]
+        ]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
+
+def user_groups_menu(lang: str = "fa"):
+    """منوی مدیریت گروه‌ها برای کاربران آزاد"""
+    if lang == "fa":
+        keyboard = [
+            ["📋 لیست گروه‌های من", "➕ اضافه کردن گروه"],
+            ["🗑 حذف گروه", "🔙 بازگشت"]
+        ]
+    else:
+        keyboard = [
+            ["📋 My Groups List", "➕ Add Group"],
+            ["🗑 Remove Group", "🔙 Back"]
         ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def language_menu(lang: str = "fa"):
+    """منوی انتخاب زبان"""
     if lang == "fa":
         keyboard = [
-            [KeyboardButton("🇮🇷 فارسی"), KeyboardButton("🇬🇧 English")],
-            [KeyboardButton("🔙 بازگشت"), KeyboardButton("🏠 منوی اصلی")]
+            ["🇮🇷 فارسی", "🇬🇧 English"],
+            ["🔙 بازگشت", "🏠 منوی اصلی"]
         ]
     else:
         keyboard = [
-            [KeyboardButton("🇮🇷 فارسی"), KeyboardButton("🇬🇧 English")],
-            [KeyboardButton("🔙 Back"), KeyboardButton("🏠 Main Menu")]
+            ["🇮🇷 فارسی", "🇬🇧 English"],
+            ["🔙 Back", "🏠 Main Menu"]
         ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
+
+def back_menu(lang: str = "fa"):
+    """منوی بازگشت عمومی"""
+    if lang == "fa":
+        keyboard = [["🔙 بازگشت", "🏠 منوی اصلی"]]
+    else:
+        keyboard = [["🔙 Back", "🏠 Main Menu"]]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
