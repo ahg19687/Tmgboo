@@ -1,9 +1,9 @@
 # telegram_bot/keyboards/user_keyboards.py
 from telegram import ReplyKeyboardMarkup, KeyboardButton
-from config.messages import get_message
+from config.messages import get_text  # تغییر از get_message به get_text
 
 def main_menu(lang: str = "fa"):
-    """منوی اصلی برای کاربران عادی (قفل‌شده)"""
+    """Main menu for regular users (locked)"""
     if lang == "fa":
         keyboard = [
             ["🔓 قفل‌گشایی", "💬 پشتیبانی"],
@@ -17,7 +17,7 @@ def main_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def unlocked_user_menu(lang: str = "fa"):
-    """منوی کاربران آزاد شده - دسترسی کامل"""
+    """Menu for unlocked users - Full access"""
     if lang == "fa":
         keyboard = [
             ["👤 پروفایل", "📨 مدیریت پیام‌ها"],
@@ -33,7 +33,7 @@ def unlocked_user_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def user_messages_menu(lang: str = "fa"):
-    """منوی مدیریت پیام‌ها برای کاربران آزاد"""
+    """Messages Management Menu for unlocked users"""
     if lang == "fa":
         keyboard = [
             ["⏰ زمان‌بندی ارسال", "🚀 ارسال فوری"],
@@ -49,7 +49,7 @@ def user_messages_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def user_groups_menu(lang: str = "fa"):
-    """منوی مدیریت گروه‌ها برای کاربران آزاد"""
+    """Groups Management Menu for unlocked users"""
     if lang == "fa":
         keyboard = [
             ["📋 لیست گروه‌های من", "➕ اضافه کردن گروه"],
@@ -63,7 +63,7 @@ def user_groups_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def language_menu(lang: str = "fa"):
-    """منوی انتخاب زبان"""
+    """Language Selection Menu"""
     if lang == "fa":
         keyboard = [
             ["🇮🇷 فارسی", "🇬🇧 English"],
@@ -77,7 +77,7 @@ def language_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
 
 def back_menu(lang: str = "fa"):
-    """منوی بازگشت عمومی"""
+    """General Back Menu"""
     if lang == "fa":
         keyboard = [["🔙 بازگشت", "🏠 منوی اصلی"]]
     else:
