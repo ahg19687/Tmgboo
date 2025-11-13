@@ -1,14 +1,15 @@
-# telegram_bot/main.py
-# application entry point
+# 📄 /telegram_bot/main.py
+# Application entry point
 
 import os, logging
 from telegram.ext import ApplicationBuilder
 from handlers import register_handlers
+from handlers.start import register_navigation_handlers  # Added
 from utils.scheduler import start_scheduler
 from keep_alive import start_keep_alive
 from config.config import SETTINGS
 
-logging.basicConfig(level=SETTINGS.get("log_level","INFO"))
+logging.basicConfig(level=SETTINGS.get("log_level", "INFO"))
 LOG = logging.getLogger(__name__)
 
 def main():
@@ -16,12 +17,19 @@ def main():
     if not token:
         LOG.error("BOT_TOKEN not set. Exiting.")
         return
+
     app = ApplicationBuilder().token(token).build()
+
+    # ✅ register all handlers
     register_handlers(app)
-    # start scheduler (background)
+    register_navigation_handlers(app)  # Added
+
+    # ✅ start background scheduler
     start_scheduler(app)
-    # start keepalive flask
+
+    # ✅ start flask keepalive service
     start_keep_alive()
+
     LOG.info("Starting polling...")
     app.run_polling()
 
