@@ -37,5 +37,5 @@ async def set_language_callback(update: Update, context: ContextTypes.DEFAULT_TY
     upsert_user(user.id, user_data)
     
     await query.edit_message_text(
-        text=get_text("lang_changed", lang=lang, lang=lang)
-)
+        text=get_text("lang_changed", lang=lang)  # ✅ اینجا درست شده - فقط یکبار lang
+    )
