@@ -1,16 +1,15 @@
-# 📄 /keyboards/support_keyboards.py
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+# telegram_bot/keyboards/support_keyboards.py
+from telegram import ReplyKeyboardMarkup, KeyboardButton
 
-# 🔹 کیبورد پشتیبانی (برای کاربران قفل و آزاد)
 def support_menu(lang: str):
     if lang == "fa":
-        buttons = [
+        keyboard = [
             [KeyboardButton("📨 ارسال پیام به پشتیبانی")],
             [KeyboardButton("🔙 بازگشت"), KeyboardButton("🏠 منوی اصلی")]
         ]
     else:
-        buttons = [
+        keyboard = [
             [KeyboardButton("📨 Contact Support")],
             [KeyboardButton("🔙 Back"), KeyboardButton("🏠 Main Menu")]
         ]
-    return ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
