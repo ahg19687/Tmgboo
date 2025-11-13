@@ -36,7 +36,7 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
         upsert_user(user.id, user_data)
         
         await query.edit_message_text(
-            text=get_text("lang_changed", lang=new_lang, lang=new_lang)
+            text=get_text("lang_changed", lang=new_lang)  # ✅ اینجا درست شده
         )
         
     elif data == "unlock":
@@ -74,4 +74,4 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await query.edit_message_text(
             text=get_text("unknown_action", lang=lang) or "❌ عمل ناشناخته"
-        )
+                                 )ه
