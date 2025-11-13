@@ -1,15 +1,14 @@
 # telegram_bot/handlers/navigation.py
 
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from utils.database import get_user
 from config.messages import get_text
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = get_user(update.effective_user.id)
-    lang = user.get("lang", "fa")
-    locked = user.get("locked", True)
+    user_data = get_user(update.effective_user.id) or {}
+    lang = user_data.get("lang", "fa")
+    locked = user_data.get("locked", True)
 
     if locked:
         text = get_text("start_locked", lang=lang)
@@ -26,10 +25,17 @@ async def go_back(update: Update, context: ContextTypes.DEFAULT_TYPE):
             [InlineKeyboardButton(get_text("menu_scheduler", lang=lang), callback_data="scheduler")],
             [InlineKeyboardButton(get_text("menu_send_now", lang=lang), callback_data="send_now")],
             [InlineKeyboardButton(get_text("menu_profile", lang=lang), callback_data="profile")],
+            [InlineKeyboardButton(get_text("back_to_main", lang=lang), callback_data="main_menu")],
         ]
 
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=text,
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    # اگر از پیام استفاده می‌کند (نه callback)
+    if update.message:
+        await update.message.reply_text(
+            text=text,
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
+    else:  # اگر از callback استفاده می‌کند
+        await update.callback_query.edit_message_text(
+            text=text,
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
