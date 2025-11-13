@@ -1,9 +1,9 @@
 # telegram_bot/keyboards/admin_keyboards.py
 from telegram import ReplyKeyboardMarkup, KeyboardButton
-from config.messages import get_message
+from config.messages import get_text  # تغییر از get_message به get_text
 
 def admin_main_menu(lang: str = "fa"):
-    """منوی اصلی ادمین - شامل تمام بخش‌های مدیریتی"""
+    """Admin Main Menu - Includes all management sections"""
     if lang == "fa":
         keyboard = [
             ["👤 مدیریت کاربران", "👥 مدیریت گروه‌ها"],
@@ -21,7 +21,7 @@ def admin_main_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def admin_users_menu(lang: str = "fa"):
-    """منوی مدیریت کاربران - لیست، سرچ، ارتقا، قفل/باز کردن"""
+    """User Management Menu - List, Search, Promote, Lock/Unlock"""
     if lang == "fa":
         keyboard = [
             ["📋 لیست کاربران", "🔍 سرچ کاربران"],
@@ -43,7 +43,7 @@ def admin_users_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def admin_groups_menu(lang: str = "fa"):
-    """منوی مدیریت گروه‌ها - لیست، اضافه، حذف"""
+    """Group Management Menu - List, Add, Remove"""
     if lang == "fa":
         keyboard = [
             ["📋 لیست گروه‌های من", "➕ اضافه کردن گروه"],
@@ -57,7 +57,7 @@ def admin_groups_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def admin_codes_menu(lang: str = "fa"):
-    """منوی مدیریت کدها - 5 نوع کد مختلف"""
+    """Codes Management Menu - 5 different code types"""
     if lang == "fa":
         keyboard = [
             ["🧪 کد تست یک روزه", "📅 کد اشتراک ۱ ماهه"],
@@ -75,7 +75,7 @@ def admin_codes_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def admin_admins_menu(lang: str = "fa"):
-    """منوی مدیریت ادمین‌ها - لیست، سرچ، اضافه، حذف، دسترسی"""
+    """Admins Management Menu - List, Search, Add, Remove, Permissions"""
     if lang == "fa":
         keyboard = [
             ["📋 لیست ادمین‌ها", "🔍 سرچ ادمین‌ها"],
@@ -93,7 +93,7 @@ def admin_admins_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def admin_messages_menu(lang: str = "fa"):
-    """منوی مدیریت پیام‌ها - زمان‌بندی، ارسال فوری، پیام به کاربر"""
+    """Messages Management Menu - Schedule, Instant Send, User Messages"""
     if lang == "fa":
         keyboard = [
             ["⏰ زمان‌بندی پیام", "🚀 ارسال پیام فوری"],
@@ -109,7 +109,7 @@ def admin_messages_menu(lang: str = "fa"):
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=False)
 
 def admin_back_menu(lang: str = "fa"):
-    """منوی بازگشت برای ادمین"""
+    """Back Menu for Admin"""
     if lang == "fa":
         keyboard = [["🔙 بازگشت", "🏠 منوی اصلی ادمین"]]
     else:
