@@ -23,3 +23,10 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ]
     upsert_user(user.id, {"user_id": user.id, "lang": lang or "fa"})
     await context.bot.send_message(chat_id=update.effective_chat.id, text=text, reply_markup=InlineKeyboardMarkup(keyboard))
+# --- ADD THIS SECTION AT END OF start.py ---
+from telegram.ext import MessageHandler, filters
+from .navigation import go_back
+
+def register_navigation_handlers(app):
+    # Handles “Back” and “Main Menu” buttons in both languages
+    app.add_handler(MessageHandler(filters.Regex("^(🔙|🏠|بازگشت|منوی اصلی)$"), go_back))
