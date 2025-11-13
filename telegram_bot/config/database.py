@@ -4,7 +4,8 @@
 import json, os
 from pathlib import Path
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "telegram_bot" / "data"
+# ✅ مسیر درست‌تر برای data/
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
 def load_datafile(name):
