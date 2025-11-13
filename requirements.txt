@@ -1,2 +1,4 @@
-pip install -r telegram_bot/requirements.txt
-python telegram_bot/main.py
+python-telegram-bot==21.6
+Flask==3.0.3
+APScheduler==3.10.1
+python-dotenv==1.0.0
