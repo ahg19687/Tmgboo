@@ -254,7 +254,7 @@ for admin in visible_admins:
     admin_name = admin.get('name', f'Admin {admin["user_id"]}')
     admin_list.append(f"👤 {admin_name}")
 admin_list = "\n".join(admin_list)
-            def get_support_message() -> str:
+def get_support_message() -> str:
     # کدهای قبلی...
     
     if admin_list:
