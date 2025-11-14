@@ -85,4 +85,23 @@
   
   "back_to_admin_main_btn": "🔙 Back to Admin Main Menu",
   "back_to_main_menu_btn": "🔙 Back to Main Menu"
+  
+  "no_admins_available": "📞 No admins available for support at the moment. Please try again later.",
+  "select_admin_for_support": "👥 Please select an admin:",
+  "write_support_message": "📩 You are sending a message to **{admin_name}**.\n\nPlease write your message:\n\n⚠️ Use /start to cancel",
+  "support_message_sent": "✅ Your message has been sent to **{admin_name}** successfully!\n\n📝 Admin's reply will be sent to this chat.",
+  "support_send_error": "❌ Error sending message. Please try again.",
+  "support_send_failed": "❌ Error sending message to {admin_name}.\nPlease try again later or select another admin.",
+  "support_cancelled": "❌ Message sending cancelled.",
+  "admin_seen_message": "✅ Admin **{admin_name}** has seen your message.",
+  "user_seen_message": "✅ User **{user_name}** has seen your message.",
+  "marked_as_seen": "✅ Marked as seen.",
+  "write_reply_to_user": "📨 You are replying to user **{user_name}**.\n\nPlease write your reply:",
+  "write_reply_to_admin": "📨 You are replying to admin **{admin_name}**.\n\nPlease write your reply:",
+  "reply_sent_to_user": "✅ Your reply has been sent to the user.",
+  "reply_sent_to_admin": "✅ Your reply has been sent to the admin.",
+  "reply_send_failed": "❌ Error sending reply. Please try again.",
+  "reply_mode_inactive": "❌ Reply mode is inactive. Please use the reply button.",
+  "use_support_button": "⚠️ Please use the 📞 Support button in the main menu."
+
 }
