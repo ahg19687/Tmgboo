@@ -243,7 +243,7 @@ async def get_support_message(user_id: int, lang: str = "fa"):
     
     if lang == "fa":
         if visible_admins:
-            admin_list = "\n".join([f"👤 {admin.get('name', f'Admin {admin[\"user_id\"]}')}" for admin in visible_admins])
+            admin_list = "\n".join([f"👤 {admin.get('name', f'Admin {admin['user_id']}')}" for admin in visible_admins])
             text = f"📞 پشتیبانی\n\nبرای دریافت کمک با ادمین‌های زیر تماس بگیرید:\n{admin_list}"
         else:
             text = "📞 پشتیبانی\n\nدر حال حاضر ادمینی موجود نیست. لطفاً بعداً تلاش کنید."
