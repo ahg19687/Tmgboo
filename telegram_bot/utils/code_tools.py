@@ -58,3 +58,15 @@ def consume_code(code_str, user_id):
             save_unlock_codes(codes)
             return True
     return False
+
+# اضافه کردن فانکشن list_codes
+def list_codes(active_only=True):
+    """لیست تمام کدها - اگر active_only=True فقط کدهای استفاده نشده رو برمی‌گرداند"""
+    codes = load_unlock_codes()
+    if active_only:
+        active_codes = []
+        for code in codes:
+            if code.get("uses", 0) < code.get("max_uses", 1):
+                active_codes.append(code)
+        return active_codes
+    return codes
