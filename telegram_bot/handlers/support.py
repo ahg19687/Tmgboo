@@ -254,9 +254,13 @@ for admin in visible_admins:
     admin_name = admin.get('name', f'Admin {admin["user_id"]}')
     admin_list.append(f"👤 {admin_name}")
 admin_list = "\n".join(admin_list)
-            text = f"📞 Support\n\nContact the following admins for help:\n{admin_list}"
-        else:
-            text = "📞 Support\n\nNo admins available at the moment. Please try again later."
+            def get_support_message() -> str:
+    # کدهای قبلی...
+    
+    if admin_list:
+        text = f"📞 Support\n\nContact the following admins for help:\n{admin_list}"
+    else:
+        text = "📞 Support\n\nNo admins available at the moment. Please try again later."
     
     return text
 
