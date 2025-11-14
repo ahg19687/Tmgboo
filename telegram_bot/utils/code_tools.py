@@ -70,3 +70,44 @@ def list_codes(active_only=True):
                 active_codes.append(code)
         return active_codes
     return codes
+
+# اضافه کردن تابع create_code
+def create_code(code, code_type, expires_at=None, max_uses=1, duration_days=None, issued_by=None):
+    """ذخیره کد جدید در دیتابیس"""
+    codes = load_unlock_codes()
+    
+    # محاسبه expires_at اگر duration_days داده شده
+    if duration_days and not expires_at:
+        from utils.time_tools import add_days, iso
+        expires_at = iso(add_days(now_utc(), duration_days))
+    
+    # محاسبه duration_days بر اساس نوع کد
+    if not duration_days:
+        if code_type == "test":
+            duration_days = 1
+        elif code_type == "1month":
+            duration_days = 30
+        elif code_type == "3month":
+            duration_days = 90
+        elif code_type == "4month":
+            duration_days = 120
+        else:  # gift یا سایر انواع
+            duration_days = 30
+    
+    # ایجاد آبجکت کد
+    code_obj = {
+        "code": code,
+        "type": code_type,
+        "duration_days": duration_days,
+        "issued_by": issued_by,
+        "issued_at": iso(now_utc()),
+        "expires_at": expires_at,
+        "used_by": None,
+        "used_at": None,
+        "max_uses": max_uses,
+        "uses": 0
+    }
+    
+    codes.append(code_obj)
+    save_unlock_codes(codes)
+    return code_obj
