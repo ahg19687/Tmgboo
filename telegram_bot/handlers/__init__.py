@@ -22,8 +22,8 @@ def register_handlers(app):
     app.add_handler(CommandHandler("send", user_messages_handlers.user_instant_send))
     app.add_handler(CommandHandler("toadmin", user_messages_handlers.user_message_to_admin))
     
-    # message handlers
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, support.text_message))
+    # ✅ اصلاح شده: حذف هندلر مشکل‌ساز و استفاده از هندلر جدید پشتیبانی
+    # هندلر پیام‌های متنی حالا در support.py ثبت می‌شه
     
     # navigation handlers
     start.register_navigation_handlers(app)
@@ -57,6 +57,9 @@ def register_handlers(app):
     # admin messages commands
     app.add_handler(CommandHandler("broadcast", admin_messages_handlers.admin_broadcast_message))
     app.add_handler(CommandHandler("senduser", admin_messages_handlers.admin_send_to_user))
+    
+    # ✅ اضافه شده: ثبت هندلرهای پشتیبانی
+    support.register_support_handlers(app)
     
     # group updates - FIXED: استفاده از CHAT_MEMBER به جای MY_CHAT_MEMBER
     app.add_handler(MessageHandler(filters.StatusUpdate.NEW_CHAT_MEMBERS | filters.StatusUpdate.LEFT_CHAT_MEMBER, user_groups.my_chat_member_update))
