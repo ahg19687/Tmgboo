@@ -1,4 +1,4 @@
-        # telegram_bot/handlers/misc_callbacks.py
+# telegram_bot/handlers/misc_callbacks.py
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ContextTypes
 from config.messages import get_text
@@ -81,124 +81,312 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await send_now_menu(update, context)
 
     # ==================== منوهای مدیریتی ادمین ====================
-    elif data == "admin_users_management":
+    elif data == "admin_users":
         if not is_admin(user.id):
             await query.edit_message_text(text="Access denied.")
             return
-        text = "👤 مدیریت کاربران - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "👤 User Management - Choose an option:"
-        keyboard = [
-            [InlineKeyboardButton("📋 لیست کاربران", callback_data="admin_list_users")],
-            [InlineKeyboardButton("🔍 جستجوی کاربر", callback_data="admin_search_user")],
-            [InlineKeyboardButton("⬆️ ارتقا به ادمین", callback_data="admin_promote_user")],
-            [InlineKeyboardButton("🔒 قفل کاربر", callback_data="admin_lock_user")],
-            [InlineKeyboardButton("🔓 آزاد کردن کاربر", callback_data="admin_unlock_user")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin_main")]
-        ]
-        if lang != "fa":
-            keyboard = [
-                [InlineKeyboardButton("📋 List Users", callback_data="admin_list_users")],
-                [InlineKeyboardButton("🔍 Search User", callback_data="admin_search_user")],
-                [InlineKeyboardButton("⬆️ Promote to Admin", callback_data="admin_promote_user")],
-                [InlineKeyboardButton("🔒 Lock User", callback_data="admin_lock_user")],
-                [InlineKeyboardButton("🔓 Unlock User", callback_data="admin_unlock_user")],
-                [InlineKeyboardButton("🔙 Back", callback_data="back_to_admin_main")]
-            ]
         await query.edit_message_text(
-            text=text,
+            text="👤 مدیریت کاربران - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "👤 User Management - Choose an option:",
+            reply_markup=admin_users_menu(lang)
+        )
+
+    elif data == "admin_groups":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await query.edit_message_text(
+            text="👥 مدیریت گروه‌ها - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "👥 Groups Management - Choose an option:",
+            reply_markup=admin_groups_menu(lang)
+        )
+
+    elif data == "admin_codes":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await query.edit_message_text(
+            text="🔑 مدیریت کدها - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "🔑 Codes Management - Choose an option:",
+            reply_markup=admin_codes_menu(lang)
+        )
+
+    elif data == "admin_admins":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await query.edit_message_text(
+            text="⚙️ مدیریت ادمین‌ها - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "⚙️ Admins Management - Choose an option:",
+            reply_markup=admin_admins_menu(lang)
+        )
+
+    elif data == "admin_messages":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await query.edit_message_text(
+            text="📨 مدیریت پیام‌ها - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "📨 Messages Management - Choose an option:",
+            reply_markup=admin_messages_menu(lang)
+        )
+
+    elif data == "admin_change_lang":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        # منوی انتخاب زبان برای ادمین
+        keyboard = [
+            [InlineKeyboardButton("🇮🇷 فارسی", callback_data="setlang_fa")],
+            [InlineKeyboardButton("🇺🇸 English", callback_data="setlang_en")],
+            [InlineKeyboardButton("🔙 بازگشت", callback_data="admin_main")]
+        ]
+        await query.edit_message_text(
+            text="🌐 انتخاب زبان:" if lang == "fa" else "🌐 Choose Language:",
             reply_markup=InlineKeyboardMarkup(keyboard)
         )
 
-    elif data == "admin_groups_management":
+    # ==================== زیرمنوهای مدیریت کاربران ====================
+    elif data == "admin_users_list":
         if not is_admin(user.id):
             await query.edit_message_text(text="Access denied.")
             return
-        text = "👥 مدیریت گروه‌ها - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "👥 Groups Management - Choose an option:"
-        keyboard = [
-            [InlineKeyboardButton("📋 لیست گروه‌های من", callback_data="user_groups_menu")],
-            [InlineKeyboardButton("➕ اضافه کردن گروه", callback_data="admin_add_group")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin_main")]
-        ]
-        if lang != "fa":
-            keyboard = [
-                [InlineKeyboardButton("📋 My Groups List", callback_data="user_groups_menu")],
-                [InlineKeyboardButton("➕ Add Group", callback_data="admin_add_group")],
-                [InlineKeyboardButton("🔙 Back", callback_data="back_to_admin_main")]
-            ]
-        await query.edit_message_text(
-            text=text,
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
+        await admin_list_users(update, context)
 
-    elif data == "admin_codes_management":
+    elif data == "admin_users_search":
         if not is_admin(user.id):
             await query.edit_message_text(text="Access denied.")
             return
-        text = "🔑 مدیریت کدها - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "🔑 Codes Management - Choose an option:"
-        keyboard = [
-            [InlineKeyboardButton("🧪 کد تست یک روزه", callback_data="admin_test_code")],
-            [InlineKeyboardButton("📅 کد ۱ ماهه", callback_data="admin_1month_code")],
-            [InlineKeyboardButton("📅 کد ۳ ماهه", callback_data="admin_3month_code")],
-            [InlineKeyboardButton("📅 کد ۴ ماهه", callback_data="admin_4month_code")],
-            [InlineKeyboardButton("🎁 کد هدیه", callback_data="admin_gift_code")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin_main")]
-        ]
-        if lang != "fa":
-            keyboard = [
-                [InlineKeyboardButton("🧪 1-Day Test Code", callback_data="admin_test_code")],
-                [InlineKeyboardButton("📅 1-Month Code", callback_data="admin_1month_code")],
-                [InlineKeyboardButton("📅 3-Month Code", callback_data="admin_3month_code")],
-                [InlineKeyboardButton("📅 4-Month Code", callback_data="admin_4month_code")],
-                [InlineKeyboardButton("🎁 Gift Code", callback_data="admin_gift_code")],
-                [InlineKeyboardButton("🔙 Back", callback_data="back_to_admin_main")]
-            ]
-        await query.edit_message_text(
-            text=text,
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
+        text = "🔍 لطفاً آیدی کاربر را وارد کنید:" if lang == "fa" else "🔍 Please enter user ID:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_user_id"] = True
 
-    elif data == "admin_admins_management":
+    elif data == "admin_promote_level2":
         if not is_admin(user.id):
             await query.edit_message_text(text="Access denied.")
             return
-        text = "⚙️ مدیریت ادمین‌ها - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "⚙️ Admins Management - Choose an option:"
-        keyboard = [
-            [InlineKeyboardButton("📋 لیست ادمین‌ها", callback_data="admin_list_admins")],
-            [InlineKeyboardButton("➕ اضافه کردن ادمین", callback_data="admin_add_admin")],
-            [InlineKeyboardButton("🗑 حذف ادمین", callback_data="admin_remove_admin")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin_main")]
-        ]
-        if lang != "fa":
-            keyboard = [
-                [InlineKeyboardButton("📋 List Admins", callback_data="admin_list_admins")],
-                [InlineKeyboardButton("➕ Add Admin", callback_data="admin_add_admin")],
-                [InlineKeyboardButton("🗑 Remove Admin", callback_data="admin_remove_admin")],
-                [InlineKeyboardButton("🔙 Back", callback_data="back_to_admin_main")]
-            ]
-        await query.edit_message_text(
-            text=text,
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
+        text = "⬆️ لطفاً آیدی کاربر را برای ارتقا به ادمین درجه ۲ وارد کنید:" if lang == "fa" else "⬆️ Please enter user ID to promote to Admin Level 2:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_promote_user"] = "level2"
 
-    elif data == "admin_messages_management":
+    elif data == "admin_promote_level1":
         if not is_admin(user.id):
             await query.edit_message_text(text="Access denied.")
             return
-        text = "📨 مدیریت پیام‌ها - گزینه مورد نظر را انتخاب کنید:" if lang == "fa" else "📨 Messages Management - Choose an option:"
-        keyboard = [
-            [InlineKeyboardButton("📨 ارسال به همه", callback_data="admin_broadcast")],
-            [InlineKeyboardButton("📤 ارسال به کاربر", callback_data="admin_send_user")],
-            [InlineKeyboardButton("🔙 بازگشت", callback_data="back_to_admin_main")]
-        ]
-        if lang != "fa":
-            keyboard = [
-                [InlineKeyboardButton("📨 Broadcast to All", callback_data="admin_broadcast")],
-                [InlineKeyboardButton("📤 Send to User", callback_data="admin_send_user")],
-                [InlineKeyboardButton("🔙 Back", callback_data="back_to_admin_main")]
-            ]
-        await query.edit_message_text(
-            text=text,
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
+        text = "⬆️ لطفاً آیدی کاربر را برای ارتقا به ادمین درجه ۱ وارد کنید:" if lang == "fa" else "⬆️ Please enter user ID to promote to Admin Level 1:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_promote_user"] = "level1"
+
+    elif data == "admin_view_profile":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "👤 لطفاً آیدی کاربر را برای مشاهده پروفایل وارد کنید:" if lang == "fa" else "👤 Please enter user ID to view profile:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_view_profile"] = True
+
+    elif data == "admin_view_subscription":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "📅 لطفاً آیدی کاربر را برای مشاهده اشتراک وارد کنید:" if lang == "fa" else "📅 Please enter user ID to view subscription:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_view_subscription"] = True
+
+    elif data == "admin_user_groups":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "👥 لطفاً آیدی کاربر را برای مشاهده گروه‌ها وارد کنید:" if lang == "fa" else "👥 Please enter user ID to view groups:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_user_groups"] = True
+
+    elif data == "admin_lock_user":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "🔒 لطفاً آیدی کاربر را برای قفل کردن وارد کنید:" if lang == "fa" else "🔒 Please enter user ID to lock:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_lock_user"] = True
+
+    elif data == "admin_unlock_user":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "🔓 لطفاً آیدی کاربر را برای آزاد کردن وارد کنید:" if lang == "fa" else "🔓 Please enter user ID to unlock:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_unlock_user"] = True
+
+    elif data == "admin_user_messages":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "📨 لطفاً آیدی کاربر را برای مشاهده پیام‌ها وارد کنید:" if lang == "fa" else "📨 Please enter user ID to view messages:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_user_messages"] = True
+
+    elif data == "admin_message_to_user":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "📤 لطفاً آیدی کاربر و پیام را وارد کنید (با فاصله):" if lang == "fa" else "📤 Please enter user ID and message (separated by space):"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_send_user"] = True
+
+    # ==================== زیرمنوهای مدیریت کدها ====================
+    elif data == "admin_code_1day":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await admin_generate_test_code(update, context)
+
+    elif data == "admin_code_1month":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await admin_generate_1month_code(update, context)
+
+    elif data == "admin_code_3month":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await admin_generate_3month_code(update, context)
+
+    elif data == "admin_code_4month":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await admin_generate_4month_code(update, context)
+
+    elif data == "admin_code_gift":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "🎁 لطفاً تعداد استفاده کد هدیه را وارد کنید:" if lang == "fa" else "🎁 Please enter gift code max uses:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_gift_uses"] = True
+
+    elif data == "admin_codes_list":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        # TODO: اضافه کردن تابع لیست کدها
+        from .admin_codes_handlers import admin_list_codes
+        await admin_list_codes(update, context)
+
+    # ==================== زیرمنوهای مدیریت ادمین‌ها ====================
+    elif data == "admin_admins_list":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await admin_list_admins(update, context)
+
+    elif data == "admin_admins_search":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "🔍 لطفاً آیدی ادمین را برای جستجو وارد کنید:" if lang == "fa" else "🔍 Please enter admin ID to search:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_admin_search"] = True
+
+    elif data == "admin_add_admin":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "➕ لطفاً آیدی کاربر را برای اضافه کردن به ادمین وارد کنید:" if lang == "fa" else "➕ Please enter user ID to add as admin:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_add_admin"] = True
+
+    elif data == "admin_remove_admin":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "🗑 لطفاً آیدی ادمین را برای حذف وارد کنید:" if lang == "fa" else "🗑 Please enter admin ID to remove:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_remove_admin"] = True
+
+    elif data == "admin_manage_permissions":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "⚙️ لطفاً آیدی ادمین و سطح دسترسی را وارد کنید:" if lang == "fa" else "⚙️ Please enter admin ID and permission level:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_manage_permissions"] = True
+
+    elif data == "admin_admin_messages":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        # TODO: اضافه کردن تابع پیام‌های ادمین
+        text = "📨 پیام‌های ادمین به شما:" if lang == "fa" else "📨 Admin messages to you:"
+        await query.edit_message_text(text=text + "\n\n(این بخش در حال توسعه است)")
+
+    elif data == "admin_message_to_admin":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "📤 لطفاً آیدی ادمین و پیام را وارد کنید:" if lang == "fa" else "📤 Please enter admin ID and message:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_message_to_admin"] = True
+
+    # ==================== زیرمنوهای مدیریت پیام‌ها ====================
+    elif data == "admin_schedule_message":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "⏰ لطفاً زمان و متن پیام را وارد کنید:" if lang == "fa" else "⏰ Please enter time and message text:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_schedule_message"] = True
+
+    elif data == "admin_instant_send":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "🚀 لطفاً متن پیام را برای ارسال فوری وارد کنید:" if lang == "fa" else "🚀 Please enter message for instant send:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_instant_send"] = True
+
+    elif data == "admin_msg_to_user":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "📨 لطفاً آیدی کاربر و پیام را وارد کنید:" if lang == "fa" else "📨 Please enter user ID and message:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_msg_to_user"] = True
+
+    elif data == "admin_messages_stats":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        # TODO: اضافه کردن تابع آمار پیام‌ها
+        text = "📊 آمار پیام‌ها:" if lang == "fa" else "📊 Messages Statistics:"
+        await query.edit_message_text(text=text + "\n\n(این بخش در حال توسعه است)")
+
+    elif data == "admin_selected_groups":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        # TODO: اضافه کردن تابع گروه‌های انتخاب شده
+        text = "✅ گروه‌های انتخاب شده:" if lang == "fa" else "✅ Selected Groups:"
+        await query.edit_message_text(text=text + "\n\n(این بخش در حال توسعه است)")
+
+    # ==================== زیرمنوهای مدیریت گروه‌ها ====================
+    elif data == "admin_groups_list":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        await list_groups_cmd(update, context)
+
+    elif data == "admin_add_group":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "➕ لطفاً آیدی گروه را برای اضافه کردن وارد کنید:" if lang == "fa" else "➕ Please enter group ID to add:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_add_group"] = True
+
+    elif data == "admin_remove_group":
+        if not is_admin(user.id):
+            await query.edit_message_text(text="Access denied.")
+            return
+        text = "🗑 لطفاً آیدی گروه را برای حذف وارد کنید:" if lang == "fa" else "🗑 Please enter group ID to remove:"
+        await query.edit_message_text(text=text)
+        context.user_data["waiting_for_remove_group"] = True
 
     # ==================== منوهای کاربران آزاد ====================
     elif data == "user_messages_management":
@@ -230,120 +418,10 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
         await groups_menu(update, context)
 
-    # ==================== اجرای عملیات ادمین ====================
-    elif data == "admin_list_users":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        await admin_list_users(update, context)
-
-    elif data == "admin_search_user":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "🔍 لطفاً آیدی کاربر را وارد کنید:" if lang == "fa" else "🔍 Please enter user ID:"
-        await query.edit_message_text(text=text)
-        # ذخیره state برای دریافت آیدی کاربر
-        context.user_data["waiting_for_user_id"] = True
-
-    elif data == "admin_promote_user":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "⬆️ لطفاً آیدی کاربر را برای ارتقا وارد کنید:" if lang == "fa" else "⬆️ Please enter user ID to promote:"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_promote_user"] = True
-
-    elif data == "admin_lock_user":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "🔒 لطفاً آیدی کاربر را برای قفل کردن وارد کنید:" if lang == "fa" else "🔒 Please enter user ID to lock:"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_lock_user"] = True
-
-    elif data == "admin_unlock_user":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "🔓 لطفاً آیدی کاربر را برای آزاد کردن وارد کنید:" if lang == "fa" else "🔓 Please enter user ID to unlock:"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_unlock_user"] = True
-
-    elif data == "admin_test_code":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        await admin_generate_test_code(update, context)
-
-    elif data == "admin_1month_code":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        await admin_generate_1month_code(update, context)
-
-    elif data == "admin_3month_code":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        await admin_generate_3month_code(update, context)
-
-    elif data == "admin_4month_code":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        await admin_generate_4month_code(update, context)
-
-    elif data == "admin_gift_code":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "🎁 لطفاً تعداد استفاده کد هدیه را وارد کنید:" if lang == "fa" else "🎁 Please enter gift code max uses:"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_gift_uses"] = True
-
-    elif data == "admin_list_admins":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        await admin_list_admins(update, context)
-
-    elif data == "admin_add_admin":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "➕ لطفاً آیدی کاربر را برای اضافه کردن به ادمین وارد کنید:" if lang == "fa" else "➕ Please enter user ID to add as admin:"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_add_admin"] = True
-
-    elif data == "admin_remove_admin":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "🗑 لطفاً آیدی ادمین را برای حذف وارد کنید:" if lang == "fa" else "🗑 Please enter admin ID to remove:"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_remove_admin"] = True
-
-    elif data == "admin_broadcast":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "📨 لطفاً پیام خود را برای ارسال به همه کاربران وارد کنید:" if lang == "fa" else "📨 Please enter message to broadcast:"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_broadcast"] = True
-
-    elif data == "admin_send_user":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "📤 لطفاً آیدی کاربر و پیام را وارد کنید (با فاصله):" if lang == "fa" else "📤 Please enter user ID and message (separated by space):"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_send_user"] = True
-
     # ==================== اجرای عملیات کاربران ====================
     elif data == "user_scheduler_menu":
         if user_data.get("locked", True):
-            await query.edit_message_text(text="Account is locked." if lang != "fa" else "حساب قفل است.")
+            await query.edit_message_text(text="Account is locked." if lang != "fa" else "حساب ققل است.")
             return
         await scheduler_menu(update, context)
 
@@ -361,16 +439,8 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.edit_message_text(text=text)
         context.user_data["waiting_for_admin_message"] = True
 
-    elif data == "admin_add_group":
-        if not is_admin(user.id):
-            await query.edit_message_text(text="Access denied.")
-            return
-        text = "➕ لطفاً آیدی گروه را برای اضافه کردن وارد کنید:" if lang == "fa" else "➕ Please enter group ID to add:"
-        await query.edit_message_text(text=text)
-        context.user_data["waiting_for_add_group"] = True
-
     # ==================== ناوبری و بازگشت ====================
-    elif data == "back_to_admin_main":
+    elif data == "admin_main":
         if not is_admin(user.id):
             await query.edit_message_text(text="Access denied.")
             return
@@ -412,4 +482,4 @@ async def callback_router(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await query.edit_message_text(
             text=get_text("unknown_action", lang=lang) or "❌ عمل ناشناخته"
-)
+                    )
