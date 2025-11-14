@@ -8,6 +8,25 @@ import logging
 
 LOG = logging.getLogger(__name__)
 
+async def get_support_message(user_id: int, lang: str = "fa"):
+    """تابع برای نمایش پیام پشتیبانی"""
+    admins = get_admins()
+    
+    if lang == "fa":
+        if admins:
+            admin_list = "\n".join([f"👤 ادمین: {admin['user_id']}" for admin in admins])
+            text = f"📞 پشتیبانی\n\nبرای دریافت کد فعال‌سازی با ادمین‌های زیر تماس بگیرید:\n{admin_list}\n\nیا از دکمه 🔓 قفل‌گشایی استفاده کنید."
+        else:
+            text = "📞 پشتیبانی\n\nدر حال حاضر ادمینی موجود نیست. لطفاً از دکمه 🔓 قفل‌گشایی استفاده کنید."
+    else:
+        if admins:
+            admin_list = "\n".join([f"👤 Admin: {admin['user_id']}" for admin in admins])
+            text = f"📞 Support\n\nContact the following admins for unlock code:\n{admin_list}\n\nOr use the 🔓 unlock button."
+        else:
+            text = "📞 Support\n\nNo admins available at the moment. Please use the 🔓 unlock button."
+    
+    return text
+
 async def text_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # receives any free text from user -> forward to admins
     user = update.effective_user
