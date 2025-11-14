@@ -2,6 +2,7 @@
 # time helpers
 
 from datetime import datetime, timezone, timedelta
+import calendar
 
 def now_utc():
     return datetime.now(timezone.utc)
@@ -29,3 +30,12 @@ def remaining(expires_iso):
 
 def add_days(dt, days):
     return dt + timedelta(days=days)
+
+# اضافه کردن تابع add_months
+def add_months(date, months):
+    """اضافه کردن ماه به تاریخ"""
+    month = date.month - 1 + months
+    year = date.year + month // 12
+    month = month % 12 + 1
+    day = min(date.day, calendar.monthrange(year, month)[1])
+    return date.replace(year=year, month=month, day=day)
