@@ -73,6 +73,24 @@ def add_group_for_user(owner_id, group_id, title=""):
         u["groups"] = u_groups
         upsert_user(owner_id, u)
 
+def remove_group_for_user(owner_id, group_id):
+    """حذف گروه از لیست گروه‌های کاربر و از دیتابیس گروه‌ها"""
+    # حذف از دیتابیس گروه‌ها
+    d = _load("groups")
+    if str(group_id) in d:
+        del d[str(group_id)]
+        _save("groups", d)
+    
+    # حذف از لیست گروه‌های کاربر
+    if owner_id:
+        u = get_user(owner_id)
+        if u and "groups" in u:
+            u_groups = u.get("groups", [])
+            if group_id in u_groups:
+                u_groups.remove(group_id)
+                u["groups"] = u_groups
+                upsert_user(owner_id, u)
+
 def list_groups():
     return [v for k,v in _load("groups").items()]
 
