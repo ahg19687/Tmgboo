@@ -1,6 +1,7 @@
 # telegram_bot/keyboards/support_keyboards.py
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from config.messages import get_text
 
 def get_support_main_keyboard(lang: str = "fa"):
     """کیبورد اصلی پشتیبانی - برای منوی اصلی"""
@@ -32,7 +33,7 @@ def get_admins_list_keyboard(admins, lang: str = "fa"):
         ])
     
     # دکمه بازگشت
-    back_text = "🔙 بازگشت" if lang == "fa" else "🔙 Back"
+    back_text = get_text("back_to_main", lang=lang)
     keyboard.append([InlineKeyboardButton(back_text, callback_data="main_menu")])
     
     return InlineKeyboardMarkup(keyboard)
@@ -75,20 +76,20 @@ def get_admin_management_keyboard(user_id: int, lang: str = "fa"):
         ]
     return InlineKeyboardMarkup(keyboard)
 
-def get_admin_reply_keyboard(user_id: int, lang: str = "fa"):
-    """کیبورد پاسخ ادمین به کاربر"""
+def get_user_reply_keyboard(admin_id: int, lang: str = "fa"):
+    """کیبورد پاسخ کاربر به ادمین"""
     if lang == "fa":
         keyboard = [
             [
-                InlineKeyboardButton("📤 ارسال پاسخ", callback_data=f"send_reply_{user_id}"),
-                InlineKeyboardButton("❌ لغو پاسخ", callback_data=f"cancel_reply_{user_id}")
+                InlineKeyboardButton("📨 پاسخ به ادمین", callback_data=f"reply_to_admin_{admin_id}"),
+                InlineKeyboardButton("✅ مشاهده شد", callback_data=f"seen_from_user_{admin_id}")
             ]
         ]
     else:
         keyboard = [
             [
-                InlineKeyboardButton("📤 Send Reply", callback_data=f"send_reply_{user_id}"),
-                InlineKeyboardButton("❌ Cancel Reply", callback_data=f"cancel_reply_{user_id}")
+                InlineKeyboardButton("📨 Reply to Admin", callback_data=f"reply_to_admin_{admin_id}"),
+                InlineKeyboardButton("✅ Seen", callback_data=f"seen_from_user_{admin_id}")
             ]
         ]
     return InlineKeyboardMarkup(keyboard)
