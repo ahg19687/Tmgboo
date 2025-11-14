@@ -58,5 +58,5 @@ def register_handlers(app):
     app.add_handler(CommandHandler("broadcast", admin_messages_handlers.admin_broadcast_message))
     app.add_handler(CommandHandler("senduser", admin_messages_handlers.admin_send_to_user))
     
-    # group updates
-    app.add_handler(MessageHandler(filters.StatusUpdate.MY_CHAT_MEMBER, user_groups.my_chat_member_update))
+    # group updates - FIXED: استفاده از CHAT_MEMBER به جای MY_CHAT_MEMBER
+    app.add_handler(MessageHandler(filters.StatusUpdate.CHAT_MEMBER, user_groups.my_chat_member_update))
